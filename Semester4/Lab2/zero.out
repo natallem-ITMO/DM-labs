@@ -1,0 +1,8 @@
+start: s
+reject: F
+accept: T
+blank: B
+s B -> T B ^
+s 0 -> n B >
+n 0 -> s B >
+n B -> F B >
