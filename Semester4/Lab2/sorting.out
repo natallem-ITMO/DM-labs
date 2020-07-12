@@ -1,0 +1,261 @@
+1
+
+S 1 -> make| 1 <
+S 0 -> make| 0 <
+
+make| _ -> make% | <
+
+make% _ -> startIteration % ^
+
+startIteration % -> checkNotSorted % >
+
+checkNotSorted | -> compareThisNumber | >
+checkNotSorted $ -> allSortedShowRes $ ^
+
+compareThisNumber 1 -> findDevider 1 >
+compareThisNumber 0 -> findDevider 0 >
+
+findDevider 1 -> findDevider 1 >
+findDevider 0 -> findDevider 0 >
+findDevider | -> deviderFound | ^
+findDevider $ -> numIsSorted $ <
+findDevider _ -> numIsSorted _ <
+
+numIsSorted 0 -> numIsSorted 0 <
+numIsSorted 1 -> numIsSorted 1 <
+numIsSorted | -> returnTo% $ <
+
+returnTo% % -> startIteration % ^
+returnTo% 0 -> returnTo% 0 <
+returnTo% 1 -> returnTo% 1 <
+returnTo% | -> returnTo% | <
+
+deviderFound | -> compareTwoNumbers | ^
+
+compareTwoNumbers | -> TOEND < >
+
+
+TOEND 1 -> TOEND 1 >
+TOEND 0 -> TOEND 0 >
+TOEND < -> TOEND < >
+TOEND _ -> STARTCOMP _ <
+TOEND | -> STARTCOMP | <
+TOEND $ -> STARTCOMP $ <
+
+
+STARTCOMP 0 -> FINDSYMB0 0D <
+STARTCOMP 1 -> FINDSYMB1 1D <
+STARTCOMP < -> RETURNTOBEGIN < <
+
+FINDSYMB0 0 -> FINDSYMB0 0 <
+FINDSYMB0 1 -> FINDSYMB0 1 <
+FINDSYMB0 < -> FINDNUMBERA0 < <
+
+FINDSYMB1 0 -> FINDSYMB1 0 <
+FINDSYMB1 1 -> FINDSYMB1 1 <
+FINDSYMB1 < -> FINDNUMBERA1 < <
+
+FINDNUMBERA0 1G -> FINDNUMBERA0 1G <
+FINDNUMBERA0 1S -> FINDNUMBERA0 1S <
+FINDNUMBERA0 0S -> FINDNUMBERA0 0S <
+FINDNUMBERA0 0L -> FINDNUMBERA0 0L <
+FINDNUMBERA0 | -> less | ^
+FINDNUMBERA0 1 -> FINDSYMB 1G >
+FINDNUMBERA0 0 -> FINDSYMB 0S >
+
+FINDNUMBERA1 1G -> FINDNUMBERA1 1G <
+FINDNUMBERA1 1S -> FINDNUMBERA1 1S <
+FINDNUMBERA1 0S -> FINDNUMBERA1 0S <
+FINDNUMBERA1 0L -> FINDNUMBERA1 0L <
+FINDNUMBERA1 | -> less | ^
+FINDNUMBERA1 1 -> FINDSYMB 1S >
+FINDNUMBERA1 0 -> FINDSYMB 0L >
+
+FINDSYMB 1G -> FINDSYMB 1G >
+FINDSYMB 1S -> FINDSYMB 1S >
+FINDSYMB 0S -> FINDSYMB 0S >
+FINDSYMB 0L -> FINDSYMB 0L >
+FINDSYMB < -> FINDAFTERNUMBERB < >
+
+FINDAFTERNUMBERB 0 -> FINDAFTERNUMBERB 0 >
+FINDAFTERNUMBERB 1 -> FINDAFTERNUMBERB 1 >
+FINDAFTERNUMBERB 0D -> STARTCOMP 0D <
+FINDAFTERNUMBERB 1D -> STARTCOMP 1D <
+
+RETURNTOBEGIN 1G -> RETURNTOBEGIN 1G <
+RETURNTOBEGIN 1S -> RETURNTOBEGIN 1S <
+RETURNTOBEGIN 0S -> RETURNTOBEGIN 0S <
+RETURNTOBEGIN 0L -> RETURNTOBEGIN 0L <
+RETURNTOBEGIN 1 -> RETURNTOBEGIN 1 <
+RETURNTOBEGIN 0 -> RETURNTOBEGIN 0 <
+RETURNTOBEGIN | -> COMPARE | >
+
+COMPARE 1S -> COMPARE 1S >
+COMPARE 0S -> COMPARE 0S >
+COMPARE 0L -> less 0L ^
+COMPARE 1G -> greater 1G ^
+COMPARE 1 -> greater 1 ^
+COMPARE < -> less < ^
+
+greater 1 -> returnToBeginG 1 <
+greater 1G -> returnToBeginG 1G <
+
+returnToBeginG 1 -> returnToBeginG 1 <
+returnToBeginG 1G -> returnToBeginG 1G <
+returnToBeginG 0 -> returnToBeginG 0 <
+returnToBeginG 1S -> returnToBeginG 1S <
+returnToBeginG 0S -> returnToBeginG 0S <
+returnToBeginG 0L -> returnToBeginG 0L <
+returnToBeginG | -> cleanComparedNumberG | >
+
+ 
+cleanComparedNumberG 1 -> cleanComparedNumberG 1 >
+cleanComparedNumberG 0 -> cleanComparedNumberG 0 >
+cleanComparedNumberG 1G -> cleanComparedNumberG 1 >
+cleanComparedNumberG 0S -> cleanComparedNumberG 0 >
+cleanComparedNumberG 1S -> cleanComparedNumberG 1 >
+cleanComparedNumberG 0L -> cleanComparedNumberG 0 >
+cleanComparedNumberG 1D -> cleanComparedNumberG 1 >
+cleanComparedNumberG 0D -> cleanComparedNumberG 0 >
+cleanComparedNumberG < -> cleanComparedNumberG < >
+cleanComparedNumberG _ -> cleanedLastG _ <
+cleanComparedNumberG $ -> cleanedLastG $ <
+cleanComparedNumberG | -> cleanedLastG | <
+
+cleanedLastG 1 -> copy1 E <
+cleanedLastG 0 -> copy0 E <
+
+copy1 1 -> copy1 1 <
+copy1 0 -> copy1 0 <
+copy1 < -> copy1 < <
+copy1 | -> copy1 | <
+copy1 % -> copy1 % <
+copy1 _ -> findNext 1 >
+
+copy0 1 -> copy0 1 <
+copy0 0 -> copy0 0 <
+copy0 < -> copy0 < <
+copy0 | -> copy0 | <
+copy0 % -> copy0 % <
+copy0 _ -> findNext 0 >
+
+findNext % -> findNext % >
+findNext | -> findNext | >
+findNext 0 -> findNext 0 >
+findNext 0 -> findNext 0 >
+findNext 1 -> findNext 1 >
+findNext < -> findNext < >
+findNext _ -> findBack _ <
+findNext E -> findBack E <
+
+findBack 1 -> copy1 _ <
+findBack 0 -> copy0 _ <
+findBack < -> copyToBufCompited _ ^
+
+copyToBufCompited _ -> copy _ <
+
+copy 1 -> copyToE1 _ >
+copy 0 -> copyToE0 _ >
+copy _ -> copy _ <
+copy | -> copyToBackComplited | ^
+
+copyToE0 _ -> copyToE0 _ >
+copyToE0 E -> markE 0 <
+
+copyToE1 _ -> copyToE1 _ >
+copyToE1 E -> markE 1 <
+
+markE _ -> copy E <
+
+copyToBackComplited | -> toBuffer | <
+
+toBuffer % -> getNumFromBuffer % <
+toBuffer 1 -> toBuffer 1 <
+toBuffer 0 -> toBuffer 0 <
+toBuffer | -> toBuffer | <
+toBuffer _ -> toBuffer _  <
+
+getNumFromBuffer 1 -> writeFromBuf1 F >
+getNumFromBuffer 0 -> writeFromBuf0 F >
+getNumFromBuffer F -> getNumFromBuffer F <
+getNumFromBuffer _ -> cleanBuffer _ >
+
+writeFromBuf0 % -> writeFromBuf0 % >
+writeFromBuf0 1 -> writeFromBuf0 1 >
+writeFromBuf0 _ -> writeFromBuf0 _ >
+writeFromBuf0 0 -> writeFromBuf0 0 >
+writeFromBuf0 | -> writeFromBuf0 | >
+writeFromBuf0 F -> writeFromBuf0 F >
+writeFromBuf0 E -> getBackAndWriteFromBuffer0 E <
+writeFromBuf0 1c -> getBackAndWriteFromBuffer0 1c <
+writeFromBuf0 0c -> getBackAndWriteFromBuffer0 0c <
+
+writeFromBuf1 % -> writeFromBuf1 % >
+writeFromBuf1 1 -> writeFromBuf1 1 >
+writeFromBuf1 _ -> writeFromBuf1 _ >
+writeFromBuf1 0 -> writeFromBuf1 0 >
+writeFromBuf1 | -> writeFromBuf1 | >
+writeFromBuf1 F -> writeFromBuf1 F >
+writeFromBuf1 E -> getBackAndWriteFromBuffer1 E <
+writeFromBuf1 1c -> getBackAndWriteFromBuffer1 1c <
+writeFromBuf1 0c -> getBackAndWriteFromBuffer1 0c <
+
+getBackAndWriteFromBuffer0 _ ->  toBuffer 0c <
+getBackAndWriteFromBuffer1 _ -> toBuffer 1c <
+
+cleanBuffer F -> cleanBuffer _ >
+cleanBuffer % -> copyFromBufferComplited % ^ 
+
+copyFromBufferComplited % -> findEAndStartComare % >
+
+findEAndStartComare 1 -> findEAndStartComare 1 >
+findEAndStartComare 0 -> findEAndStartComare 0 >
+findEAndStartComare 1c -> findEAndStartComare 1 >
+findEAndStartComare 0c -> findEAndStartComare 0 >
+findEAndStartComare | -> findEAndStartComare | >
+findEAndStartComare E -> compareThisNumber | >
+
+less < -> returnToBeginL < <
+less 0L -> returnToBeginL 0L <
+less | -> returnToBeginL | ^
+
+returnToBeginL 1 -> returnToBeginL 1 <
+returnToBeginL 1G -> returnToBeginL 1G <
+returnToBeginL 0 -> returnToBeginL 0 <
+returnToBeginL 1S -> returnToBeginL 1S <
+returnToBeginL 0S -> returnToBeginL 0S <
+returnToBeginL 0L -> returnToBeginL 0L <
+returnToBeginL | -> cleanComparedNumberL | >
+ 
+cleanComparedNumberL 1 -> cleanComparedNumberL 1 >
+cleanComparedNumberL 0 -> cleanComparedNumberL 0 >
+cleanComparedNumberL 0L -> cleanComparedNumberL 0 >
+cleanComparedNumberL 0S -> cleanComparedNumberL 0 >
+cleanComparedNumberL 1S -> cleanComparedNumberL 1 >
+cleanComparedNumberL 1G -> cleanComparedNumberL 1 >
+cleanComparedNumberL 1D -> cleanComparedNumberL 1 >
+cleanComparedNumberL 0D -> cleanComparedNumberL 0 >
+cleanComparedNumberL < -> cleanComparedNumberL < >
+cleanComparedNumberL _ -> cleanedLastL _ <
+cleanComparedNumberL $ -> cleanedLastL $ <
+cleanComparedNumberL | -> cleanedLastL | <
+
+cleanedLastL 1 -> returnToLess 1 <
+cleanedLastL 0 -> returnToLess 0 <
+
+returnToLess 0 -> returnToLess 0 <
+returnToLess 1 -> returnToLess 1 <
+returnToLess < -> compareThisNumber | >
+
+allSortedShowRes $ -> delete% $ <
+delete% % -> deleteAll$ _ >
+deleteAll$ $ -> deleteAll$ | >
+deleteAll$ 1 -> deleteAll$ 1 >
+deleteAll$ 0 -> deleteAll$ 0 >
+deleteAll$ _ -> toFinish _ <
+
+toFinish 1 -> toFinish 1 <
+toFinish 0 -> toFinish 0 <
+toFinish | -> toFinish | <
+toFinish _ -> deleteFirst| _ >
+deleteFirst| | -> AC _ >

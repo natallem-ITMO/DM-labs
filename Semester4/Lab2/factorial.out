@@ -1,0 +1,228 @@
+start: 	s
+accept: end
+reject: R
+blank: _
+
+s 1 -> right 1 > 
+s 0 -> right 0 >
+
+right 1 -> right 1 >
+right 0 -> right 0 >
+right _ -> copy- |A <
+
+copy- 1 -> copy- 1 <
+copy- 0 -> copy- 0 <
+copy- _ -> copyNext - >
+
+copyNext 1 -> copyNext 1 >
+copyNext 0 -> copyNext 0 >
+copyNext - -> copyNext - >
+copyNext _ -> copyNext _ >
+copyNext 1c -> copyNext 1c >
+copyNext 0c -> copyNext 0c >
+copyNext 1A -> oneBack 1A <
+copyNext 0A -> oneBack 0A <
+copyNext |A -> oneBack |A <
+copyNext |B -> oneBack |B <
+
+oneBack 1 -> copy1 1A <
+oneBack 0 -> copy0 0A <
+oneBack - -> clL - <
+oneBack | -> copy- |A <
+
+copy1 1 -> copy1 1 <
+copy1 0 -> copy1 0 <
+copy1 - -> copy1 - <
+copy1 0c -> copy1 0c <
+copy1 1c -> copy1 1c <
+copy1 _ -> copyNext 1c >
+
+copy0 1 -> copy0 1 <
+copy0 0 -> copy0 0 <
+copy0 - -> copy0 - <
+copy0 0c -> copy0 0c <
+copy0 1c -> copy0 1c <
+copy0 _ -> copyNext 0c >
+
+clL 1c -> clL 1 <
+clL 0c -> clL 0 <
+clL _ -> return _ >
+clL | -> return | >
+
+return 0 -> return 0 >
+return 1 -> return 1 >
+return - -> return2 | >
+
+return2 1A -> return2 1 >
+return2 0A -> return2 0 >
+return2 |A -> writeOne0 | <
+return2 |B -> restartCalculating | <
+
+writeOne0 0 -> writeOne0 0 < 
+writeOne0 1 -> writeOne0 1 <
+writeOne0 | -> writeOne0 | <
+writeOne0 _ -> writeOne1 | <
+writeOne1 _ -> startCalc 1 >
+
+startCalc | -> startCalc | <
+startCalc 0 -> startCalc 0 <
+startCalc 1 -> startCalc 1 <
+startCalc _ -> startCalc1 + <
+startCalc1 _ -> add 0 >
+
+add 0 -> add 0 >
+add 1 -> add 1 >
+add + -> add + >
+add | -> minusAdd | >
+
+minusAdd 1 -> minusAdd 1 >
+minusAdd 0 -> minusAdd 0 >
+minusAdd | -> minusAdd1 | <
+
+minusAdd1 1 -> canSum 0 <
+minusAdd1 0 -> minusAdd1 1 <
+minusAdd1 | -> cannotSum | <
+
+canSum 0 -> canSum 0 <
+canSum 1 -> canSum 1 <
+canSum | -> canSum1 | <
+
+canSum1 1 -> addtonum1 1A <
+canSum1 0 -> addtonum0 0A <
+canSum1 + -> summedCleanInputB + <
+
+addtonum1 1 -> addtonum1 1 <
+addtonum1 0 -> addtonum1 0 <
+addtonum1 + -> addtonum1a + <
+
+addtonum0 0 -> addtonum0 0 <
+addtonum0 1 -> addtonum0 1 <
+addtonum0 + -> addtonum0a + <
+
+addtonum0a 1B -> addtonum0a 1B <
+addtonum0a 0B -> addtonum0a 0B <
+addtonum0a 1 -> addedtonum 1B >
+addtonum0a 0 -> addedtonum 0B >
+addtonum0a _ -> addedtonum 0B >
+
+addtonum1a 1B -> addtonum1a 1B <
+addtonum1a 0B -> addtonum1a 0B <
+addtonum1a 1 -> hasOne 0B <
+addtonum1a 0 -> addedtonum 1B >
+addtonum1a _ -> addedtonum 1B >
+
+hasOne 1 -> hasOne 0 <
+hasOne 0 -> addedtonum 1 >
+hasOne _ -> addedtonum 1 >
+
+addedtonum 1 -> addedtonum 1 >
+addedtonum 0 -> addedtonum 0 >
+addedtonum 1B -> addedtonum 1B >
+addedtonum 0B -> addedtonum 0B >
+addedtonum + -> findNextNum + >
+
+findNextNum 1 -> findNextNum 1 >
+findNextNum 0 -> findNextNum 0 >
+findNextNum 1A -> canSum1 1A <
+findNextNum 0A -> canSum1 0A <
+
+summedCleanInputB 1B -> summedCleanInputB 1 <
+summedCleanInputB 0B -> summedCleanInputB 0 <
+summedCleanInputB 1 -> summedCleanInputA 1 >
+summedCleanInputB 0 -> summedCleanInputA 0 >
+summedCleanInputB _ -> summedCleanInputA _ >
+
+summedCleanInputA 1 -> summedCleanInputA 1 >
+summedCleanInputA 0 -> summedCleanInputA 0 >
+summedCleanInputA + -> summedCleanInputA + >
+summedCleanInputA 1A -> summedCleanInputA 1 >
+summedCleanInputA 0A -> summedCleanInputA 0 > 
+summedCleanInputA | -> minusAdd | >
+
+cannotSum 0 -> cannotSum - <
+cannotSum 1 -> cannotSum - <
+cannotSum + -> moveThis - <
+
+moveThis 1 -> move1 - >
+moveThis 0 -> move0 - >
+moveThis _ -> cleanAfterMove _ >
+moveThis - -> moveThis - <
+
+move1 - -> move1 - > 
+move1 1 -> returnBackMove1 1 <
+move1 0 -> returnBackMove1 0 <
+move1 | -> returnBackMove1 | <
+
+returnBackMove1 - -> moveThis 1 <
+
+move0 - -> move0 - > 
+move0 1 -> returnBackMove0 1 <
+move0 0 -> returnBackMove0 0 <
+move0 | -> returnBackMove0 | <
+
+returnBackMove0 - -> moveThis 0 <
+
+cleanAfterMove - -> cleanAfterMove _ >
+cleanAfterMove 1 -> goRight 1 >
+cleanAfterMove 0 -> goRight 0 >
+
+goRight 0 -> goRight 0 >
+goRight 1 -> goRight 1 >
+goRight | -> goRight | >
+goRight _ -> minusFact0 _ <
+
+minusFact0 | -> minusF | <
+
+
+minusF 1 -> checkNotNull 0 <
+minusF 0 -> minusF 1 <
+minusF | -> end E ^ 
+
+checkNotNull 0 -> checkNotNull 0 <
+checkNotNull 1 -> canCopyFactAndMul 1 >
+checkNotNull | -> checkNotNullR | >
+
+checkNotNullR 1 -> canCopyFactAndMul 1 >
+checkNotNullR 0 -> checkNotNullR 0 >
+checkNotNullR | -> showAns _ <
+
+canCopyFactAndMul 0 -> canCopyFactAndMul 0 >
+canCopyFactAndMul 1 -> canCopyFactAndMul 1 >
+canCopyFactAndMul | -> copyF |B ^
+
+copyF |B -> toNextSection |B <
+
+toNextSection 0 -> toNextSection 0 <
+toNextSection 1 -> toNextSection 1 <
+toNextSection | -> deleteRightSection | < 
+
+deleteRightSection 1 -> deleteRightSection _ <
+deleteRightSection 0 -> deleteRightSection _ <
+deleteRightSection | -> returnToCopingSection | >
+
+returnToCopingSection _ -> returnToCopingSection _ >
+returnToCopingSection | -> copyNext - >
+
+restartCalculating 0 -> restartCalculating 0 <
+restartCalculating 1 -> restartCalculating 1 <
+restartCalculating | -> restartCalculating1 | <
+
+restartCalculating1 0 -> restartCalculating1 0 <
+restartCalculating1 1 -> restartCalculating1 1 <
+restartCalculating1 | -> startCalc | <
+
+showAns 0 -> showAns _ <
+showAns 1 -> showAns _ <
+showAns | -> showAns1 _ <
+
+showAns1 | -> showAns2 _ <
+showAns1 0 -> showAns1 _ <
+showAns1 1 -> showAns1 _ <
+
+showAns2 1 -> showAns2 1 <
+showAns2 0 -> showAns2 0 <
+showAns2 _ -> end _ >
+
+
+
+

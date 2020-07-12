@@ -1,0 +1,39 @@
+start: 	S
+accept: END
+reject: R
+blank: _
+
+S 0 -> MARK 0 <
+S 1 -> MARK 1 <
+
+MARK _ -> RIGHT * > 
+
+RIGHT A -> RIGHT A >
+RIGHT 0 -> WRITE0 A <
+RIGHT 1 -> WRITE1 A <
+RIGHT _ -> CLEAN _ <
+
+WRITE0 A -> WRITE0 A <
+WRITE0 * -> WRITE0 * <
+WRITE0 0 -> WRITE0 0 <
+WRITE0 1 -> WRITE0 1 <
+WRITE0 _ -> FINDSTAR 0 >
+
+WRITE1 A -> WRITE1 A <
+WRITE1 * -> WRITE1 * <
+WRITE1 0 -> WRITE1 0 <
+WRITE1 1 -> WRITE1 1 <
+WRITE1 _ -> FINDSTAR 1 >
+
+FINDSTAR * -> RIGHT * >
+FINDSTAR 1 -> FINDSTAR 1 >
+FINDSTAR 0 -> FINDSTAR 0 >
+
+CLEAN A -> CLEAN _ <
+CLEAN * -> CLEAN _ <
+CLEAN 0 -> CLEAN 0 <
+CLEAN 1 -> CLEAN 1 <
+CLEAN _ -> THEEND _ >
+
+THEEND 1 -> END 1 ^
+THEEND 0 -> END 0 ^
